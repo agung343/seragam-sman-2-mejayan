@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ROLE {
+  OWNER
+  TEACHER
+  STUDENT
+}
+
+enum PaymentStatus {
+  BELUM_DIBAYAR
+  CICILAN
+  LUNAS
+}
+
+model User {
+  id       String @id @default(cuid())
+  username String @unique
+  name     String
+  password String //Hash NIS atau no.urut
+  class    String?
+  role     ROLE
+  sale     Sale[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("user")
+}
+
+model Product {
+  id    String @id @default(cuid())
+  name  String
+  price Int
+  stock Int
+  sales Sale[]
+}
+
+model Sale {
+  id      String        @id @default(cuid())
+  paid    Int
+  status  PaymentStatus @default(BELUM_DIBAYAR)
+  invoice String        @unique
+  userId  String
+  user    User          @relation(fields: [userId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
