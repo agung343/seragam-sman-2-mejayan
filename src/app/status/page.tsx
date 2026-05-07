@@ -87,13 +87,6 @@ export default async function Status() {
             </>
           )}
         </div>
-        <div className="flex justify-center">
-          <a href="/api/pdf" download="nota.pdf">
-            <button className="bg-blue-500/70 active:bg-blue-500 px-2 py-4 rounded-md">
-              Download PDF Nota
-            </button>
-          </a>
-        </div>
       </div>
     </main>
   );

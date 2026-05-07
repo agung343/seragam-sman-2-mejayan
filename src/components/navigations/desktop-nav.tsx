@@ -16,10 +16,9 @@ export default function DesktopNavigation({ session }: { session: Session }) {
   if (!session) {
     return (
       <nav className="hidden md:flex items-center justify-around h-12 p-4 bg-[#490FCB]">
-        <h1 className="text-2xl font-bold">Seragam SMAN2 Mejayan</h1>
-        <Link href={"/login"} className="flex flex-col gap-1.5">
-          <span className="text-xs dark:text-black">Login</span>
-        </Link>
+        <h1 className="text-2xl font-bold dark:text-black text-neutral-100">
+          Pengambilan Seragam SMAN2 Mejayan
+        </h1>
       </nav>
     );
   }
@@ -51,11 +50,13 @@ export default function DesktopNavigation({ session }: { session: Session }) {
           />
         </>
       )}
-      <NavLink
-        href="/status"
-        label="Status"
-        active={pathname.includes("/status")}
-      />
+      {role === "STUDENT" && (
+        <NavLink
+          href="/status"
+          label="Status"
+          active={pathname.includes("/status")}
+        />
+      )}
       <LogoutButton />
     </nav>
   );

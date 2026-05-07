@@ -50,7 +50,7 @@ export default async function Dashboard({
       </h1>
       <ClassFilter selected={selectedClass ?? ""} />
       <div className="overflow-auto p-1.5 md:p-4">
-        <table className="p-1.5 w-full text-sm md:text-lg mx-auto border sticky z-10">
+        <table className="p-1.5 w-full text-sm md:text-lg mx-auto border sticky">
           <thead>
             <tr>
               <th className="font-bold p-1.5 border dark:text-neutral-100 text-left">

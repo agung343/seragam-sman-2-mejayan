@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Plus_Jakarta_Sans, DM_Serif_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import MobileNavigation from "@/components/navigations/mobile-nav";
 import DesktopNavigation from "@/components/navigations/desktop-nav";
+import Footer from "@/components/footer";
 import { getSession } from "@/lib/session";
 
 const dmSerif = DM_Serif_Display({
@@ -16,16 +17,6 @@ const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", '700', "800"]
 })
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Seragam SMAN 2 Mejayan",
@@ -47,6 +38,7 @@ export default async function RootLayout({
         <DesktopNavigation session={session} />
         {children}
         <MobileNavigation session={session} />
+        <Footer />
       </body>
     </html>
   );

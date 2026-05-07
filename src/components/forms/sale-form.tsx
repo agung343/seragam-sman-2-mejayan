@@ -45,7 +45,6 @@ export default function SaleForm({ students, products }: Props) {
   const filteredStudents = useMemo(() => {
     if (!selectedClass) return students;
     const filtered = students.filter((student) => student.class === selectedClass);
-    console.log([selectedClass])
     return filtered
   }, [students, selectedClass]);
 
