@@ -9,7 +9,8 @@ const initState = {
 
 export default function LoginPage() {
   const [state, action, isPending] = useActionState(loginAction, initState);
-  return (
+  return (<>
+    <main className="min-h-screen h-3/4">
     <form
       className="flex flex-col justify-center gap-4 md:max-w-md md:mx-auto p-4 dark:text-neutral-100"
       action={action}
@@ -58,5 +59,6 @@ export default function LoginPage() {
         )}
       </div>
     </form>
-  );
+    </main>
+  </>);
 }

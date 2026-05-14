@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import prisma from "../prisma";
 import { getSession } from "../session";
@@ -15,6 +16,10 @@ const Schema = z.object({
   productId: z.string().min(1),
   paid: z.coerce.number().min(0),
 });
+
+const cicilanSchema = z.object({
+  paid: z.coerce.number().min(1)
+})
 
 function generateInvoice(student: string) {
   return `MONITA-${student}`;
@@ -107,4 +112,67 @@ export async function SaleAction(
     success: true,
     errorMsg: null
   };
+}
+
+
+export async function updateCicilan(studentId: string, prevState: State, formData: FormData) {
+  const session = await getSession();
+  if (!session || session.role !== "OWNER") {
+    return {
+      success: false,
+      errorMsg: "Unauthorized"
+    }   
+  }
+  
+  const parsed = cicilanSchema.safeParse({
+    paid: formData.get("paid")
+  })
+  if (!parsed.success) {
+    return {
+      success: false,
+      errorMsg: "Input pembayaran salah"
+    }
+  }
+  const {paid} = parsed.data
+
+  const existingSale = await prisma.sale.findFirst({
+    where: {
+      userId: studentId
+    },
+    include: {
+      product: {
+        select: {
+          price: true
+        }
+      }
+    }
+  })
+  if (!existingSale) {
+    return {
+      success: false,
+      errorMsg: "Siswa belum mengambil seragam"
+    }
+  }
+
+  const remaining = existingSale.product.price - existingSale.paid
+  const lunas = remaining === paid
+  if (paid > remaining) {
+    return {
+      success: false,
+      errorMsg: "Mohon masukan yg sesuai"
+    }
+  }
+
+  const totalPaid = existingSale.paid + paid
+
+  await prisma.sale.update({
+    where: {id: existingSale.id},
+    data: {
+      paid: totalPaid,
+      status: lunas ? "LUNAS" : "CICILAN"
+    } 
+  })
+
+  revalidatePath("/")
+  redirect("/daftar")
 }

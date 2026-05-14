@@ -5,14 +5,14 @@ import { Home, LayoutDashboard, User, LogIn, LogOut } from "lucide-react";
 import { logoutAction } from "@/lib/action/auth";
 
 type Session = {
-  id: string
-  username: string
-  role: "OWNER" | "TEACHER" | "STUDENT"
-} | null
+  id: string;
+  username: string;
+  role: "OWNER" | "TEACHER" | "STUDENT";
+} | null;
 
-export default function MobileNavigation({session}: {session: Session}) {
+export default function MobileNavigation({ session }: { session: Session }) {
   const pathname = usePathname();
-  
+
   if (!session) {
     return (
       <nav className="fixed bottom-0 w-full bg-neutral-100 border-t flex justify-around p-4 md:hidden">
@@ -55,12 +55,14 @@ export default function MobileNavigation({session}: {session: Session}) {
           />
         </>
       )}
-      <NavLink
-        href="/status"
-        icon={<User size={24} />}
-        label="Status"
-        active={pathname === "/status"}
-      />
+      {role === "STUDENT" && (
+        <NavLink
+          href="/status"
+          icon={<User size={24} />}
+          label="Status"
+          active={pathname === "/status"}
+        />
+      )}
       <LogoutButton />
     </nav>
   );
@@ -98,5 +100,5 @@ function LogoutButton() {
         <span className="text-[10px] font-medium">Logout</span>
       </button>
     </form>
-  )
+  );
 }
