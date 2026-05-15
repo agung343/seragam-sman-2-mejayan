@@ -117,7 +117,7 @@ export async function SaleAction(
 
 export async function updateCicilan(studentId: string, prevState: State, formData: FormData) {
   const session = await getSession();
-  if (!session || session.role !== "OWNER") {
+  if (!session || session.role === "STUDENT") {
     return {
       success: false,
       errorMsg: "Unauthorized"
