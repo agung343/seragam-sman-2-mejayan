@@ -33,7 +33,7 @@ export default async function Status() {
   const sale = student.sale[0]
 
   return (
-    <main className="p-2.5">
+    <main className="p-2.5 md:p-4 min-h-screen">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <p className="font-light text-xl">

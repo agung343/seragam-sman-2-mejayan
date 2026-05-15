@@ -28,7 +28,7 @@ export default function DesktopNavigation({ session }: { session: Session }) {
   return (
     <nav className="hidden md:flex items-center gap-4 h-16 p-4 bg-[#490FCB]">
       <h1 className="text-2xl font-bold text-neutral-100 ">
-        Seragam SMAN2 Mejayan
+        Toko Monita
       </h1>
       {role === "OWNER" && (
         <>
