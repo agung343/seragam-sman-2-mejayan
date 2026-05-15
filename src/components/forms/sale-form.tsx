@@ -1,5 +1,6 @@
 "use client";
 import { useActionState, useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { SaleAction } from "@/lib/action/sale";
 
 export const CLASS = [
@@ -34,51 +35,66 @@ const initState = {
 };
 
 export default function SaleForm({ students, products }: Props) {
+  const router = useRouter();
   const [state, action, isPending] = useActionState(SaleAction, initState);
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-  const [selectedProductId, setSelectedProductId] = useState("")
-  const [paidAmount, setPaidAmount] = useState(0)
-  const [isEditPaid, setIsEditPaid] = useState(false)
-  const [formKey, setFormKey] = useState(0)
+  const [selectedProductId, setSelectedProductId] = useState("");
+  const [paidAmount, setPaidAmount] = useState(0);
+  const [isEditPaid, setIsEditPaid] = useState(false);
+  const [formKey, setFormKey] = useState(0);
+
+  function handleClassFilter(e: React.ChangeEvent<HTMLSelectElement>) {
+    const searchParams = new URLSearchParams();
+    const value = e.target.value;
+    setSelectedClass(e.target.value);
+    if (selectedClass !== "") {
+      searchParams.set("kelas", value);
+    }
+
+    router.push(`/?${searchParams.toString()}`);
+  }
 
   const filteredStudents = useMemo(() => {
     if (!selectedClass) return students;
-    const filtered = students.filter((student) => student.class === selectedClass);
-    return filtered
+    const filtered = students.filter(
+      (student) => student.class === selectedClass
+    );
+    return filtered;
   }, [students, selectedClass]);
 
   useEffect(() => {
-   if (!selectedProductId) {
-    setSelectedPrice(null)
-    setPaidAmount(0)
-    return;
-   }
+    if (!selectedProductId) {
+      setSelectedPrice(null);
+      setPaidAmount(0);
+      return;
+    }
 
-   const product = products.find(p => p.id === selectedProductId)
+    const product = products.find((p) => p.id === selectedProductId);
 
-   setSelectedPrice(product!.price)
-   if (!isEditPaid) {
-    setPaidAmount(product!.price)
-   }
-  }, [selectedProductId])
+    setSelectedPrice(product!.price);
+    if (!isEditPaid) {
+      setPaidAmount(product!.price);
+    }
+  }, [selectedProductId]);
 
   useEffect(() => {
     if (state.success) {
-      setFormKey((k) => k + 1)
-      setSelectedClass("")
-      setSelectedProductId("")
-      setSelectedPrice(null)
-      setPaidAmount(0)
-      setIsEditPaid(false)
+      setFormKey((k) => k + 1);
+      setSelectedClass("");
+      setSelectedProductId("");
+      setSelectedPrice(null);
+      setPaidAmount(0);
+      setIsEditPaid(false);
     }
-  }, [state.success])
-
+  }, [state.success]);
 
   return (
     <>
       <form key={formKey} action={action} className="p-3 flex flex-col gap-4">
-        <h1 className="text-2xl md:text-4xl text-center text-sky-600">Form Pengambilan Paket</h1>
+        <h1 className="text-2xl md:text-4xl text-center text-sky-600">
+          Form Pengambilan Paket
+        </h1>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="class" className="font-semibold text-lg">
             Pilih Kelas:
@@ -86,7 +102,8 @@ export default function SaleForm({ students, products }: Props) {
           <select
             id="class"
             name="class"
-            onChange={(e) => setSelectedClass(e.target.value)}
+            onChange={handleClassFilter}
+            value={selectedClass}
             className="p-2.5 rounded-md border border-gray-500 text-sm dark:text-neutral-500"
           >
             <option value={""}>pilih kelas</option>
@@ -146,10 +163,18 @@ export default function SaleForm({ students, products }: Props) {
           <label htmlFor="paid" className="font-semibold text-lg">
             Bayar
           </label>
-          <input type="number" min={0} value={paidAmount} onChange={(e) => {
-            setIsEditPaid(true)
-            setPaidAmount(Number(e.target.value))
-          }} id="paid" name="paid" className="p-2.5 rounded-md border border-gray-500 dark:text-neutral-100" />
+          <input
+            type="number"
+            min={0}
+            value={paidAmount}
+            onChange={(e) => {
+              setIsEditPaid(true);
+              setPaidAmount(Number(e.target.value));
+            }}
+            id="paid"
+            name="paid"
+            className="p-2.5 rounded-md border border-gray-500 dark:text-neutral-100"
+          />
         </div>
         <div className="flex justify-center">
           <button

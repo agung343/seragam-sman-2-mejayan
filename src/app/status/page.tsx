@@ -29,7 +29,6 @@ export default async function Status() {
   });
 
   if (!student) return null;
-  console.log(student);
 
   const sale = student.sale[0]
 
@@ -39,6 +38,9 @@ export default async function Status() {
         <div className="flex flex-col gap-2">
           <p className="font-light text-xl">
             Nama: <span className="font-semibold">{student.name}</span>
+          </p>
+          <p className="font-light text-xl">
+            Sekolah: <span className="font-semibold">SMA Negeri 2 Mejayan</span>
           </p>
           <p className="font-light text-xl">
             Kelas: <span className="font-semibold">{student.class}</span>

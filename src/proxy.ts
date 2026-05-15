@@ -17,6 +17,9 @@ export async function proxy(req: NextRequest) {
     if (userRole === "STUDENT" && isTryingAccessToAdmin) {
         return NextResponse.redirect(new URL("/status", req.url))
     }
+    if (userRole === "TEACHER" && pathname !== "/daftar") {
+        return NextResponse.redirect(new URL("/daftar", req.url))
+    }
 
     return NextResponse.next()
 }

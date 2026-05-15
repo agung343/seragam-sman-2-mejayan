@@ -25,6 +25,7 @@ export default async function Dashboard({
     orderBy: {
       name: "asc",
     },
+    take: 40
   });
 
   const report = students.map((student) => {

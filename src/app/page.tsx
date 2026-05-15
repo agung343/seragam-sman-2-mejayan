@@ -2,11 +2,14 @@ import prisma from "@/lib/prisma";
 import SaleForm from "@/components/forms/sale-form";
 import LastestSale from "@/components/latest-sale";
 
-export default async function Home() {
+export default async function Home({searchParams}: {searchParams: Promise<{kelas: string}>}) {
+  const kelas = (await searchParams).kelas
+
   const [students, products, salesResult] = await Promise.all([
     prisma.user.findMany({
       where: {
         role: "STUDENT",
+        ...(kelas && { class: kelas})
       },
       select: {
         id: true,
@@ -16,6 +19,7 @@ export default async function Home() {
       orderBy: {
         name: "asc",
       },
+      take: 40
     }),
     prisma.product.findMany({
       select: {
