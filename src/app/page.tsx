@@ -8,11 +8,18 @@ export default async function Home({
   searchParams: Promise<{ kelas: string }>;
 }) {
   const kelas = (await searchParams).kelas;
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ kelas: string }>;
+}) {
+  const kelas = (await searchParams).kelas;
 
   const [students, products, salesResult] = await Promise.all([
     prisma.user.findMany({
       where: {
         role: "STUDENT",
+        ...(kelas && { class: kelas }),
         ...(kelas && { class: kelas }),
       },
       select: {
@@ -23,6 +30,7 @@ export default async function Home({
       orderBy: {
         name: "asc",
       },
+      take: 40,
       take: 40,
     }),
     prisma.product.findMany({
@@ -36,19 +44,29 @@ export default async function Home({
       include: {
         user: true,
         product: true,
+        product: true,
       },
       orderBy: {
         createdAt: "desc",
+        createdAt: "desc",
       },
+      take: 10,
+    }),
       take: 10,
     }),
   ]);
 
   const sales = salesResult.map((sale) => ({
+  const sales = salesResult.map((sale) => ({
     id: sale.id,
     name: sale.user.name,
     product: sale.product.name,
     paid: sale.paid,
+    status: sale.status.replace("_", " ") as
+      | "BELUM DIBAYAR"
+      | "CICILAN"
+      | "LUNAS",
+  }));
     status: sale.status.replace("_", " ") as
       | "BELUM DIBAYAR"
       | "CICILAN"
