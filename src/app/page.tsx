@@ -14,7 +14,6 @@ export default async function Home({
       where: {
         role: "STUDENT",
         ...(kelas && { class: kelas }),
-        ...(kelas && { class: kelas }),
       },
       select: {
         id: true,
