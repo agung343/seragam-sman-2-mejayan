@@ -47,7 +47,7 @@ export default async function Dashboard({
   });
 
   return (
-    <main className="p-2.5 space-y-4 mt-3">
+    <main className="p-2.5 space-y-4 mt-3 md:min-h-[89vh] pb-24 md:pb-0">
       <h1 className="text-2xl md:text-4xl font-semibold dark:text-neutral-100 text-sky-600 text-center">
         Daftar Siswa {selectedClass}
       </h1>

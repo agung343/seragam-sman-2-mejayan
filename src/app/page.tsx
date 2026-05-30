@@ -2,14 +2,18 @@ import prisma from "@/lib/prisma";
 import SaleForm from "@/components/forms/sale-form";
 import LastestSale from "@/components/latest-sale";
 
-export default async function Home({searchParams}: {searchParams: Promise<{kelas: string}>}) {
-  const kelas = (await searchParams).kelas
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ kelas: string }>;
+}) {
+  const kelas = (await searchParams).kelas;
 
   const [students, products, salesResult] = await Promise.all([
     prisma.user.findMany({
       where: {
         role: "STUDENT",
-        ...(kelas && { class: kelas})
+        ...(kelas && { class: kelas }),
       },
       select: {
         id: true,
@@ -19,7 +23,7 @@ export default async function Home({searchParams}: {searchParams: Promise<{kelas
       orderBy: {
         name: "asc",
       },
-      take: 40
+      take: 40,
     }),
     prisma.product.findMany({
       select: {
@@ -31,27 +35,32 @@ export default async function Home({searchParams}: {searchParams: Promise<{kelas
     prisma.sale.findMany({
       include: {
         user: true,
-        product: true
+        product: true,
       },
       orderBy: {
-        createdAt: "desc"
+        createdAt: "desc",
       },
-      take: 10
-    })
+      take: 10,
+    }),
   ]);
 
-  const sales = salesResult.map(sale => ({
+  const sales = salesResult.map((sale) => ({
     id: sale.id,
     name: sale.user.name,
     product: sale.product.name,
     paid: sale.paid,
-    status: sale.status.replace("_", " ") as "BELUM DIBAYAR" | "CICILAN" | "LUNAS"
-  }))
+    status: sale.status.replace("_", " ") as
+      | "BELUM DIBAYAR"
+      | "CICILAN"
+      | "LUNAS",
+  }));
 
   return (
-    <main className="p-2.5 md:p-4">
-      <SaleForm students={students} products={products} />
-      <LastestSale sales={sales} />
+    <main className="p-2.5 md:p-4 md:min-h-[89vh]">
+      <div className="grid md:grid-cols-[2fr_1fr] md:gap-4">
+        <SaleForm students={students} products={products} />
+        <LastestSale sales={sales} />
+      </div>
     </main>
   );
 }

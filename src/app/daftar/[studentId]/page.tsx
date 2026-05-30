@@ -38,7 +38,7 @@ export default async function UpdateStudentPage({
   });
   if (!sale) {
     return (
-      <main className="p-2.5 md:p-4 space-y-2.5 md:space-y-4">
+      <main className="p-2.5 md:p-4 space-y-2.5 md:space-y-4 md:min-h-[89vh]">
         <h1 className="text-xl md:text-2xl font-semibold">
           {student.name}{" "}
           <span className="font-light">belum mengambil seragam</span>
@@ -59,10 +59,10 @@ export default async function UpdateStudentPage({
 
   if (amountToPay === 0) {
     return (
-      <main className="min-h-screen p-2.5 md:p-4 space-y-2.5 md:space-y-4">
+      <main className="min-h-screen md:min-h-[89vh] p-2.5 md:p-4 space-y-2.5 md:space-y-4">
         <div className="flex flex-col gap-2 md:gap-4">
           <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <label className="text-sm md:text-base">Nama</label>
+            <label className="text-sm md:text-lg">Nama</label>
             <input
               className="px-1.5 md:px-2 py-2.5 md:py-4 font-semibold"
               readOnly
@@ -70,7 +70,7 @@ export default async function UpdateStudentPage({
             />
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-2">
-            <p className="text-sm md:text-base">
+            <p className="text-sm md:text-lg">
               Status: <span className="font-semibold">LUNAS</span>
             </p>
           </div>
@@ -88,23 +88,23 @@ export default async function UpdateStudentPage({
   console.log("name", student);
 
   return (
-    <main className="p-2.5 md:p-4 space-y-2.5 md:spce-y-4 min-h-screen">
+    <main className="p-2.5 md:p-4 space-y-2.5 md:spce-y-4 min-h-[89vh]">
       <h1 className="text-2xl md:text-4xl font-semibold text-neutral-800/70 text-center">
         Pembayaran Cicilan
       </h1>
       <div className="flex flex-col gap-2 md:gap-4">
         <div className="flex flex-col md:flex-row md:items-center gap-2">
-          <label className="text-sm md:text-base">Nama</label>
+          <label className="text-sm md:text-lg">Nama</label>
           <input
-            className="px-1.5 md:px-2 py-2.5 md:py-4 font-semibold"
+            className="px-1.5 md:px-2 py-2.5 md:py-4 font-semibold text-lg"
             readOnly
             defaultValue={student.name}
           />
         </div>
         <div className="flex flex-col md:flex-row md:items-center gap-2">
-          <label className="text-sm md:text-base">Kekurangan</label>
+          <label className="text-sm md:text-lg">Kekurangan</label>
           <input
-            className="px-1.5 md:px-2 py-2.5 md:py-2 font-semibold"
+            className="px-1.5 md:px-2 py-2.5 md:py-2 text-lg font-semibold"
             defaultValue={`Rp. ${amountToPay}`}
           />
         </div>
