@@ -27,11 +27,11 @@ export default function CicilanForm({ studentId }: Props) {
         <input
           id="paid"
           name="paid"
-          className="py-1.5 md:py-2 px-2 md:px-4 border rounded-md bg:neutral-100 text-neutral-800 text-sm md:text-base w-3/4 md:w-1/4"
+          className="py-1.5 md:py-2 px-2 md:px-4 border rounded-md bg:neutral-100 text-neutral-800 text-sm md:text-lg w-3/4 md:w-1/4"
         />
       </div>
       <div className="flex justify-center">
-        <button className="bg-sky-400 p-2 rounded-md text-neutral-100 disabled::bg-neutral-500">
+        <button className="bg-sky-400 p-2 rounded-md md:text-lg text-neutral-100 disabled::bg-neutral-500">
           {isPending ? "Updating..." : "Update"}
         </button>
       </div>
